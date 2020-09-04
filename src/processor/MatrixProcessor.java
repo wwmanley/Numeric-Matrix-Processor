@@ -1,5 +1,7 @@
 package processor;
 
+import java.util.Scanner;
+
 class MatrixProcessor {
 
     private Matrix A;
@@ -8,6 +10,14 @@ class MatrixProcessor {
     public MatrixProcessor(Matrix A, Matrix B) {
         this.A = A;
         this.B = B;
+    }
+
+    public MatrixProcessor(Matrix A) {
+        this.A = A;
+    }
+
+    public Scanner newScanner() {
+        return new Scanner(System.in);
     }
 
     public void printMatrix(int[][] matrix) {
@@ -34,5 +44,18 @@ class MatrixProcessor {
         }
 
         printMatrix(matrixSum);
+    }
+
+    public void multiplyBy() {
+        int[][] matrixProduct = new int[A.row][A.column];
+        int multiplyMatrixBy = newScanner().nextInt();
+
+        for (int i = 0; i < A.getMatrix().length; i++) {
+            for (int j = 0; j < A.getMatrix()[A.row-1].length; j++) {
+                matrixProduct[i][j] = A.getMatrix()[i][j] * multiplyMatrixBy;
+            }
+        }
+
+        printMatrix(matrixProduct);
     }
 }
