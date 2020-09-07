@@ -2,7 +2,7 @@ package processor;
 
 import java.util.Scanner;
 
-class MatrixProcessor {
+public class MatrixProcessor {
 
     private Matrix A;
     private Matrix B;
@@ -20,17 +20,21 @@ class MatrixProcessor {
         return new Scanner(System.in);
     }
 
-    public void printMatrix(int[][] matrix) {
-        for (int[] array : matrix) {
-            for (int element : array) {
-                System.out.printf(element + " ");
+    public void printMatrix(double[][] matrix) {
+        for (double[] array : matrix) {
+            for (double element : array) {
+                System.out.print(element + " ");
             }
             System.out.println();
         }
     }
 
     public void addMatrix() {
-        int[][] matrixSum = new int[A.row][A.column];
+        double[][] matrixSum = new double[A.row][A.column];
+
+        if (B == null) {
+            return;
+        }
 
         if (A.getMatrix().length != B.getMatrix().length) {
             System.out.println("ERROR");
@@ -46,16 +50,32 @@ class MatrixProcessor {
         printMatrix(matrixSum);
     }
 
-    public void multiplyBy() {
-        int[][] matrixProduct = new int[A.row][A.column];
-        int multiplyMatrixBy = newScanner().nextInt();
+    public void multiplyBy(int constant) {
+        double[][] matrixProduct = new double[A.row][A.column];
 
         for (int i = 0; i < A.getMatrix().length; i++) {
             for (int j = 0; j < A.getMatrix()[A.row-1].length; j++) {
-                matrixProduct[i][j] = A.getMatrix()[i][j] * multiplyMatrixBy;
+                matrixProduct[i][j] = A.getMatrix()[i][j] * constant;
             }
         }
 
         printMatrix(matrixProduct);
+    }
+
+    public void multiplyMatrixes() {
+
+
+        double product[][] = new double[A.row][B.column];
+
+        for (int i = 0; i < A.row; i++) {
+            for (int j = 0; j < B.column; j++) {
+                for (int k = 0; k < A.column; k++) {
+                    product[i][j] += A.getMatrix()[i][k] * B.getMatrix()[k][j];
+                }
+            }
+        }
+
+        printMatrix(product);
+
     }
 }

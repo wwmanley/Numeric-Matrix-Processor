@@ -2,30 +2,28 @@ package processor;
 
 import java.util.Scanner;
 
-class Matrix {
+public class Matrix {
 
     Scanner reader = new Scanner(System.in);
-    public static int row;
-    public static int column;
-    private int[][] matrix;
+    public int row;
+    public int column;
+    private double[][] matrix;
 
-    public Matrix() {
-        row = reader.nextInt();
-        column = reader.nextInt();
-        matrix = new int[row][column];
+    public Matrix(int row, int column) {
+        this.row = row;
+        this.column = column;
+        matrix = new double[row][column];
+    }
 
+    public void generateMatrix() {
         for (int i = 0; i < row; i++) {
             for (int j = 0; j < column; j++) {
-                matrix[i][j] = reader.nextInt();
+                matrix[i][j] = reader.nextDouble();
             }
         }
     }
 
-    public Matrix(int[][] matrix) {
-        this.matrix = matrix;
-    }
-
-    public int[][] getMatrix() {
+    public double[][] getMatrix() {
         return matrix;
     }
 }
