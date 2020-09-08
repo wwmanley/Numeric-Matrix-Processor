@@ -1,5 +1,6 @@
 package processor;
 
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class MatrixProcessor {
@@ -78,4 +79,47 @@ public class MatrixProcessor {
         printMatrix(product);
 
     }
+
+    public void transpose(int menuOption) {
+
+        double transpose[][] = new double[A.row][A.column];
+        double copyOfInitial[][] = A.getMatrix().clone();
+
+        switch (menuOption) {
+            case 1: {
+                for (int i = 0; i < transpose.length; i++) {
+                    for (int j = 0; j < transpose[i].length; j++) {
+                        if (i == j) {
+                            transpose[i][j] = copyOfInitial[i][j];
+                        } else {
+                            transpose[i][j] = copyOfInitial[j][i];
+                        }
+                    }
+                }
+                printMatrix(transpose);
+            }
+            case 2:
+                int i = 0;
+                int j = 0;
+                for (int columns = transpose.length-1; columns >= 0; columns--) {
+                    for (int rows = transpose.length-1; rows >= 0; rows--) {
+                        transpose[i][j] = copyOfInitial[rows][columns];
+                        if (j + 1 == transpose.length) {
+                            j = 0;
+                            i++;
+                        } else {
+                            j++;
+                        }
+                    }
+                }
+                printMatrix(transpose);
+        }
+    }
 }
+
+/*
+                        if (i == firstRow && j == lastColumn) {
+                            transpose[i][j] = copyOfInitial[i][j];
+                            firstRow++;
+                            lastColumn--;
+ */

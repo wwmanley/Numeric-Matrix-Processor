@@ -54,6 +54,16 @@ public class UserInterface {
                     process.multiplyMatrixes();
                     break;
                 }
+                case 4: {
+                    System.out.println("Enter size of first matrix: ");
+                    Matrix A = new Matrix(reader.nextInt(), reader.nextInt());
+                    System.out.println("Enter first matrix: ");
+                    A.generateMatrix();
+                    MatrixProcessor process = new MatrixProcessor(A);
+                    transposeMenu();
+                    process.transpose(reader.nextInt());
+                    break;
+                }
             }
             menuOptions();
             menuOption = reader.nextInt();
@@ -65,6 +75,14 @@ public class UserInterface {
         System.out.println("1. Add matrices");
         System.out.println("2. Multiply matrix to a constant");
         System.out.println("3. Multiply matrices");
+        System.out.println("4. Transpose matrix");
         System.out.println("0. Exit");
+    }
+
+    public void transposeMenu() {
+        System.out.println("1. Main diagonal");
+        System.out.println("2. Side diagonal");
+        System.out.println("3. Vertical line");
+        System.out.println("4. Horizontal line");
     }
 }
