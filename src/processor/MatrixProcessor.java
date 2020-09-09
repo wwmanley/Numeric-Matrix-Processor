@@ -43,7 +43,7 @@ public class MatrixProcessor {
         }
 
         for (int i = 0; i < A.getMatrix().length; i++) {
-            for (int j = 0; j < A.getMatrix()[A.row-1].length; j++) {
+            for (int j = 0; j < A.getMatrix()[A.row - 1].length; j++) {
                 matrixSum[i][j] = A.getMatrix()[i][j] + B.getMatrix()[i][j];
             }
         }
@@ -55,7 +55,7 @@ public class MatrixProcessor {
         double[][] matrixProduct = new double[A.row][A.column];
 
         for (int i = 0; i < A.getMatrix().length; i++) {
-            for (int j = 0; j < A.getMatrix()[A.row-1].length; j++) {
+            for (int j = 0; j < A.getMatrix()[A.row - 1].length; j++) {
                 matrixProduct[i][j] = A.getMatrix()[i][j] * constant;
             }
         }
@@ -80,12 +80,12 @@ public class MatrixProcessor {
 
     }
 
-    public void transpose(int menuOption) {
+    public void transpose(int menuOptions) {
 
         double transpose[][] = new double[A.row][A.column];
         double copyOfInitial[][] = A.getMatrix().clone();
 
-        switch (menuOption) {
+        switch (menuOptions) {
             case 1: {
                 for (int i = 0; i < transpose.length; i++) {
                     for (int j = 0; j < transpose[i].length; j++) {
@@ -97,12 +97,13 @@ public class MatrixProcessor {
                     }
                 }
                 printMatrix(transpose);
+                break;
             }
-            case 2:
+            case 2: {
                 int i = 0;
                 int j = 0;
-                for (int columns = transpose.length-1; columns >= 0; columns--) {
-                    for (int rows = transpose.length-1; rows >= 0; rows--) {
+                for (int columns = transpose.length - 1; columns >= 0; columns--) {
+                    for (int rows = transpose.length - 1; rows >= 0; rows--) {
                         transpose[i][j] = copyOfInitial[rows][columns];
                         if (j + 1 == transpose.length) {
                             j = 0;
@@ -113,13 +114,40 @@ public class MatrixProcessor {
                     }
                 }
                 printMatrix(transpose);
+                break;
+            }
+            case 3: {
+                int j = 0;
+                for (int i = 0; i < transpose.length; i++) {
+                    for (int columns = transpose.length - 1; columns >= 0; columns--) {
+                        transpose[i][j] = copyOfInitial[i][columns];
+                        if (j + 1 == transpose.length) {
+                            j = 0;
+                        } else {
+                            j++;
+                        }
+                    }
+                }
+                printMatrix(transpose);
+                break;
+            }
+            case 4: {
+                int j = 0;
+                int row = transpose.length - 1;
+                for (int i = 0; i < transpose.length; i++) {
+                    for (int columns = 0; columns < transpose.length; columns++) {
+                        transpose[i][j] = copyOfInitial[row][columns];
+                        if (j + 1 == transpose.length) {
+                            j = 0;
+                            row--;
+                        } else {
+                            j++;
+                        }
+                    }
+                }
+                printMatrix(transpose);
+                break;
+            }
         }
     }
 }
-
-/*
-                        if (i == firstRow && j == lastColumn) {
-                            transpose[i][j] = copyOfInitial[i][j];
-                            firstRow++;
-                            lastColumn--;
- */

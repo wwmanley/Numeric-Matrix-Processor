@@ -55,13 +55,15 @@ public class UserInterface {
                     break;
                 }
                 case 4: {
-                    System.out.println("Enter size of first matrix: ");
+                    transposeMenu();
+                    System.out.print("Your choice: ");
+                    int transposeMenu = reader.nextInt();
+                    System.out.println("Enter matrix size");
                     Matrix A = new Matrix(reader.nextInt(), reader.nextInt());
-                    System.out.println("Enter first matrix: ");
+                    System.out.println("Enter matrix: ");
                     A.generateMatrix();
                     MatrixProcessor process = new MatrixProcessor(A);
-                    transposeMenu();
-                    process.transpose(reader.nextInt());
+                    process.transpose(transposeMenu);
                     break;
                 }
             }
