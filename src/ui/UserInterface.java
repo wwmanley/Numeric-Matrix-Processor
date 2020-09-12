@@ -51,7 +51,7 @@ public class UserInterface {
                     System.out.println("Enter second matrix: ");
                     B.generateMatrix();
                     MatrixProcessor process = new MatrixProcessor(A, B);
-                    process.multiplyMatrixes();
+                    process.multiplyMatrices();
                     break;
                 }
                 case 4: {

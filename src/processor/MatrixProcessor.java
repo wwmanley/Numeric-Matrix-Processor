@@ -1,8 +1,5 @@
 package processor;
 
-import java.util.Arrays;
-import java.util.Scanner;
-
 public class MatrixProcessor {
 
     private Matrix A;
@@ -15,10 +12,6 @@ public class MatrixProcessor {
 
     public MatrixProcessor(Matrix A) {
         this.A = A;
-    }
-
-    public Scanner newScanner() {
-        return new Scanner(System.in);
     }
 
     public void printMatrix(double[][] matrix) {
@@ -63,10 +56,10 @@ public class MatrixProcessor {
         printMatrix(matrixProduct);
     }
 
-    public void multiplyMatrixes() {
+    public void multiplyMatrices() {
 
 
-        double product[][] = new double[A.row][B.column];
+        double[][] product = new double[A.row][B.column];
 
         for (int i = 0; i < A.row; i++) {
             for (int j = 0; j < B.column; j++) {
@@ -82,73 +75,85 @@ public class MatrixProcessor {
 
     public void transpose(int menuOptions) {
 
-        double transpose[][] = new double[A.row][A.column];
-        double copyOfInitial[][] = A.getMatrix().clone();
+        double[][] transpose = new double[A.row][A.column];
+        double[][] copyOfInitial = A.getMatrix().clone();
 
         switch (menuOptions) {
-            case 1: {
-                for (int i = 0; i < transpose.length; i++) {
-                    for (int j = 0; j < transpose[i].length; j++) {
-                        if (i == j) {
-                            transpose[i][j] = copyOfInitial[i][j];
-                        } else {
-                            transpose[i][j] = copyOfInitial[j][i];
-                        }
-                    }
-                }
-                printMatrix(transpose);
+            case 1:
+                mainDiagonalTranspose(transpose, copyOfInitial);
                 break;
-            }
-            case 2: {
-                int i = 0;
-                int j = 0;
-                for (int columns = transpose.length - 1; columns >= 0; columns--) {
-                    for (int rows = transpose.length - 1; rows >= 0; rows--) {
-                        transpose[i][j] = copyOfInitial[rows][columns];
-                        if (j + 1 == transpose.length) {
-                            j = 0;
-                            i++;
-                        } else {
-                            j++;
-                        }
-                    }
-                }
-                printMatrix(transpose);
+            case 2:
+                sideDiagonalTranspose(transpose, copyOfInitial);
                 break;
-            }
-            case 3: {
-                int j = 0;
-                for (int i = 0; i < transpose.length; i++) {
-                    for (int columns = transpose.length - 1; columns >= 0; columns--) {
-                        transpose[i][j] = copyOfInitial[i][columns];
-                        if (j + 1 == transpose.length) {
-                            j = 0;
-                        } else {
-                            j++;
-                        }
-                    }
-                }
-                printMatrix(transpose);
+            case 3:
+                verticalTranspose(transpose, copyOfInitial);
                 break;
-            }
-            case 4: {
-                int j = 0;
-                int row = transpose.length - 1;
-                for (int i = 0; i < transpose.length; i++) {
-                    for (int columns = 0; columns < transpose.length; columns++) {
-                        transpose[i][j] = copyOfInitial[row][columns];
-                        if (j + 1 == transpose.length) {
-                            j = 0;
-                            row--;
-                        } else {
-                            j++;
-                        }
-                    }
-                }
-                printMatrix(transpose);
+            case 4:
+                horizontalTranspose(transpose, copyOfInitial);
                 break;
+        }
+    }
+
+    public void mainDiagonalTranspose(double[][] transpose, double[][] copyOfInitial) {
+        for (int i = 0; i < transpose.length; i++) {
+            for (int j = 0; j < transpose[i].length; j++) {
+                if (i == j) {
+                    transpose[i][j] = copyOfInitial[i][j];
+                } else {
+                    transpose[i][j] = copyOfInitial[j][i];
+                }
             }
         }
+        printMatrix(transpose);
+    }
+
+    public void sideDiagonalTranspose(double[][] transpose, double[][] copyOfInitial) {
+        int i = 0;
+        int j = 0;
+        for (int columns = transpose.length - 1; columns >= 0; columns--) {
+            for (int rows = transpose.length - 1; rows >= 0; rows--) {
+                transpose[i][j] = copyOfInitial[rows][columns];
+                if (j + 1 == transpose.length) {
+                    j = 0;
+                    i++;
+                } else {
+                    j++;
+                }
+            }
+        }
+        printMatrix(transpose);
+    }
+
+    public void verticalTranspose(double[][] transpose, double[][] copyOfInitial) {
+        int j = 0;
+        for (int i = 0; i < transpose.length; i++) {
+            for (int columns = transpose.length - 1; columns >= 0; columns--) {
+                transpose[i][j] = copyOfInitial[i][columns];
+                if (j + 1 == transpose.length) {
+                    j = 0;
+                } else {
+                    j++;
+                }
+            }
+        }
+        printMatrix(transpose);
+    }
+
+    public void horizontalTranspose(double[][] transpose, double[][] copyOfInitial) {
+        int j = 0;
+        int row = transpose.length - 1;
+        for (int i = 0; i < transpose.length; i++) {
+            for (int columns = 0; columns < transpose.length; columns++) {
+                transpose[i][j] = copyOfInitial[row][columns];
+                if (j + 1 == transpose.length) {
+                    j = 0;
+                    row--;
+                } else {
+                    j++;
+                }
+            }
+        }
+        printMatrix(transpose);
     }
 
     // Recursively find the determinant of the given matrix
@@ -167,13 +172,14 @@ public class MatrixProcessor {
             return (matrix[0][0] * matrix[1][1]) - (matrix[0][1] * matrix[1][0]);
         }
 
-        // we need to find a way to
 
-
+        // badColumn is the column where the current element in currentMatrix is
         int badColumn = 0;
+        // currentRow and currentColumn are used to set the values of the smallerMatrix
         int currentColumn = 0;
         int currentRow = 0;
 
+        // Iterate through top row of currentMatrix, then set values for smallerMatrix
         for (int i = 0; i < currentMatrix[0].length; i++) {
             for (int j = 0; j < currentMatrix.length; j++) {
                 for (int k = 0; k < currentMatrix.length; k++) {
@@ -189,12 +195,14 @@ public class MatrixProcessor {
                     }
                 }
             }
+            // In the determinant equation, every other value is subtracted. Start with adding.
             if (i % 2 == 0 || i == 0) {
                 total += currentMatrix[0][badColumn] * (determinant(n - 1, smallerMatrix));
             } else {
                 total -= currentMatrix[0][badColumn] * (determinant(n - 1, smallerMatrix));
             }
             badColumn++;
+            // Set the variables back to 0 for the next iteration
             currentColumn = 0;
             currentRow = 0;
         }
