@@ -66,6 +66,14 @@ public class UserInterface {
                     process.transpose(transposeMenu);
                     break;
                 }
+                case 5: {
+                    System.out.println("Enter size of first matrix: ");
+                    Matrix A = new Matrix(reader.nextInt(), reader.nextInt());
+                    System.out.println("Enter matrix: ");
+                    A.generateMatrix();
+                    MatrixProcessor process = new MatrixProcessor(A);
+                    System.out.println("The result is: \n" + process.determinant(A.getMatrix().length, A.getMatrix()));
+                }
             }
             menuOptions();
             menuOption = reader.nextInt();
@@ -78,6 +86,7 @@ public class UserInterface {
         System.out.println("2. Multiply matrix to a constant");
         System.out.println("3. Multiply matrices");
         System.out.println("4. Transpose matrix");
+        System.out.println("5. Calculate a determinate");
         System.out.println("0. Exit");
     }
 

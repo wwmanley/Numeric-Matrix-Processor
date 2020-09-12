@@ -150,4 +150,55 @@ public class MatrixProcessor {
             }
         }
     }
+
+    // Recursively find the determinant of the given matrix
+    public double determinant(int n, double[][] matrix) {
+
+        double total = 0;
+
+        double[][] currentMatrix = matrix.clone();
+        double[][] smallerMatrix = new double[n-1][n-1];
+
+        if (n == 1) {
+            return matrix[0][0];
+        }
+
+        if (n == 2) {
+            return (matrix[0][0] * matrix[1][1]) - (matrix[0][1] * matrix[1][0]);
+        }
+
+        // we need to find a way to
+
+
+        int badColumn = 0;
+        int currentColumn = 0;
+        int currentRow = 0;
+
+        for (int i = 0; i < currentMatrix[0].length; i++) {
+            for (int j = 0; j < currentMatrix.length; j++) {
+                for (int k = 0; k < currentMatrix.length; k++) {
+                    // fill up matrix
+                    if (j != 0  && k != badColumn) {
+                        smallerMatrix[currentRow][currentColumn] = currentMatrix[j][k];
+                        if (currentColumn == smallerMatrix.length - 1) {
+                            currentColumn = 0;
+                            currentRow++;
+                        } else {
+                            currentColumn++;
+                        }
+                    }
+                }
+            }
+            if (i % 2 == 0 || i == 0) {
+                total += currentMatrix[0][badColumn] * (determinant(n - 1, smallerMatrix));
+            } else {
+                total -= currentMatrix[0][badColumn] * (determinant(n - 1, smallerMatrix));
+            }
+            badColumn++;
+            currentColumn = 0;
+            currentRow = 0;
+        }
+
+        return total;
+    }
 }
