@@ -38,7 +38,7 @@ public class UserInterface {
                     A.generateMatrix();
                     MatrixProcessor process = new MatrixProcessor(A);
                     System.out.println("Multiply by: ");
-                    process.multiplyBy(reader.nextInt());
+                    process.printMatrix(process.multiplyBy(reader.nextInt(), A.getMatrix()));
                     break;
                 }
                 case 3: {
@@ -73,6 +73,17 @@ public class UserInterface {
                     A.generateMatrix();
                     MatrixProcessor process = new MatrixProcessor(A);
                     System.out.println("The result is: \n" + process.determinant(A.getMatrix().length, A.getMatrix()));
+                    break;
+                }
+                case 6: {
+                    System.out.println("Enter size of first matrix: ");
+                    Matrix A = new Matrix(reader.nextInt(), reader.nextInt());
+                    System.out.println("Enter matrix: ");
+                    A.generateMatrix();
+                    MatrixProcessor process = new MatrixProcessor(A);
+                    System.out.println("The result is: ");
+                    process.printMatrix(process.inverse());
+                    break;
                 }
             }
             menuOptions();
@@ -87,6 +98,7 @@ public class UserInterface {
         System.out.println("3. Multiply matrices");
         System.out.println("4. Transpose matrix");
         System.out.println("5. Calculate a determinate");
+        System.out.println("6. Inverse matrix");
         System.out.println("0. Exit");
     }
 

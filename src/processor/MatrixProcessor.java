@@ -4,6 +4,7 @@ public class MatrixProcessor {
 
     private Matrix A;
     private Matrix B;
+    private double[][] cofactors;
 
     public MatrixProcessor(Matrix A, Matrix B) {
         this.A = A;
@@ -44,16 +45,15 @@ public class MatrixProcessor {
         printMatrix(matrixSum);
     }
 
-    public void multiplyBy(int constant) {
-        double[][] matrixProduct = new double[A.row][A.column];
+    public double[][] multiplyBy(double constant, double[][] matrix) {
 
-        for (int i = 0; i < A.getMatrix().length; i++) {
-            for (int j = 0; j < A.getMatrix()[A.row - 1].length; j++) {
-                matrixProduct[i][j] = A.getMatrix()[i][j] * constant;
+        for (int i = 0; i < matrix.length; i++) {
+            for (int j = 0; j < matrix[i].length; j++) {
+                matrix[i][j] = matrix[i][j] * constant;
             }
         }
 
-        printMatrix(matrixProduct);
+        return matrix;
     }
 
     public void multiplyMatrices() {
@@ -80,7 +80,7 @@ public class MatrixProcessor {
 
         switch (menuOptions) {
             case 1:
-                mainDiagonalTranspose(transpose, copyOfInitial);
+                printMatrix(mainDiagonalTranspose(transpose, copyOfInitial));
                 break;
             case 2:
                 sideDiagonalTranspose(transpose, copyOfInitial);
@@ -94,7 +94,7 @@ public class MatrixProcessor {
         }
     }
 
-    public void mainDiagonalTranspose(double[][] transpose, double[][] copyOfInitial) {
+    public double[][] mainDiagonalTranspose(double[][] transpose, double[][] copyOfInitial) {
         for (int i = 0; i < transpose.length; i++) {
             for (int j = 0; j < transpose[i].length; j++) {
                 if (i == j) {
@@ -104,7 +104,7 @@ public class MatrixProcessor {
                 }
             }
         }
-        printMatrix(transpose);
+        return transpose;
     }
 
     public void sideDiagonalTranspose(double[][] transpose, double[][] copyOfInitial) {
@@ -163,13 +163,17 @@ public class MatrixProcessor {
 
         double[][] currentMatrix = matrix.clone();
         double[][] smallerMatrix = new double[n-1][n-1];
+        double[][] cofactorMatrix = new double[currentMatrix.length][currentMatrix.length];
 
         if (n == 1) {
             return matrix[0][0];
         }
 
         if (n == 2) {
-            return (matrix[0][0] * matrix[1][1]) - (matrix[0][1] * matrix[1][0]);
+            total = (matrix[0][0] * matrix[1][1]) - (matrix[0][1] * matrix[1][0]);
+            //System.out.println("test " + total);
+            //cofactor(total);
+            return total;
         }
 
 
@@ -180,33 +184,72 @@ public class MatrixProcessor {
         int currentRow = 0;
 
         // Iterate through top row of currentMatrix, then set values for smallerMatrix
-        for (int i = 0; i < currentMatrix[0].length; i++) {
-            for (int j = 0; j < currentMatrix.length; j++) {
-                for (int k = 0; k < currentMatrix.length; k++) {
-                    // fill up matrix
-                    if (j != 0  && k != badColumn) {
-                        smallerMatrix[currentRow][currentColumn] = currentMatrix[j][k];
-                        if (currentColumn == smallerMatrix.length - 1) {
-                            currentColumn = 0;
-                            currentRow++;
-                        } else {
-                            currentColumn++;
+        for (int h = 0; h < currentMatrix[0].length; h++) {
+            for (int i = 0; i < currentMatrix[0].length; i++) {
+                for (int j = 0; j < currentMatrix.length; j++) {
+                    for (int k = 0; k < currentMatrix.length; k++) {
+                        // fill up matrix
+                        if (j != h && k != badColumn) {
+                            smallerMatrix[currentRow][currentColumn] = currentMatrix[j][k];
+                            if (currentColumn == smallerMatrix.length - 1) {
+                                currentColumn = 0;
+                                currentRow++;
+                            } else {
+                                currentColumn++;
+                            }
                         }
                     }
                 }
+                // In the determinant equation, every other value is subtracted. Start with adding.
+                if ((i % 2 == 0 || i == 0) && h == 0) {
+                    double elementTotal = currentMatrix[0][badColumn] * (determinant(n - 1, smallerMatrix));
+                    total += elementTotal;
+                } else if (i % 2 != 0 && h == 0) {
+                    double elementTotal = currentMatrix[0][badColumn] * (determinant(n - 1, smallerMatrix));
+                    total -= elementTotal;
+                }
+
+                if (currentMatrix.length == A.getMatrix().length) {
+                    cofactorMatrix[h][i] = Math.pow(-1, h + i) * (determinant(n - 1, smallerMatrix));
+                }
+                badColumn++;
+                // Set the variables back to 0 for the next iteration
+                currentColumn = 0;
+                currentRow = 0;
             }
-            // In the determinant equation, every other value is subtracted. Start with adding.
-            if (i % 2 == 0 || i == 0) {
-                total += currentMatrix[0][badColumn] * (determinant(n - 1, smallerMatrix));
-            } else {
-                total -= currentMatrix[0][badColumn] * (determinant(n - 1, smallerMatrix));
-            }
-            badColumn++;
-            // Set the variables back to 0 for the next iteration
-            currentColumn = 0;
-            currentRow = 0;
+            badColumn = 0;
+        }
+
+        if (currentMatrix.length == A.getMatrix().length) {
+            cofactor(cofactorMatrix);
         }
 
         return total;
+    }
+
+
+    public void cofactor(double[][] matrix) {
+
+        double[][] transpose = new double[matrix.length][matrix.length];
+
+        matrix = mainDiagonalTranspose(transpose, matrix);
+
+
+        cofactors = matrix.clone();
+    }
+
+
+
+    public double[][] inverse() {
+
+        double determinant = determinant(A.getMatrix().length, A.getMatrix());
+
+        if (determinant == 0) {
+            return null;
+        }
+
+        return multiplyBy((1 / determinant), cofactors);
+
+
     }
 }
