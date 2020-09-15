@@ -53,6 +53,8 @@ public class MatrixProcessor {
             }
         }
 
+        System.out.println("\nResult:");
+
         return matrix;
     }
 
@@ -171,8 +173,6 @@ public class MatrixProcessor {
 
         if (n == 2) {
             total = (matrix[0][0] * matrix[1][1]) - (matrix[0][1] * matrix[1][0]);
-            //System.out.println("test " + total);
-            //cofactor(total);
             return total;
         }
 
